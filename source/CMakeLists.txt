@@ -1,20 +1,29 @@
 cmake_minimum_required(VERSION 3.20)
 
-project(traffic-light-stm32f4)
+# Keep this options before project() command
+# Commands to generate warnings in case of in-source builds.
+set(CMAKE_DISABLE_SOURCE_CHANGES ON)
+set(CMAKE_DISABLE_IN_SOURCE_BUILD ON)
+
+# Don't move of position this command
+project(traffic-light-stm32f4 VERSION 0.1.0)
 
 # add_subdirectory(traffic-light-stm32-cube-ide)
 # add_subdirectory(traffic-light-code)
 
+# Keep this options after project() command
 enable_language(C ASM)
-set(CMAKE_C_STANDARD 11)
-set(CMAKE_C_STANDARD_REQUIRED ON)
-set(CMAKE_C_EXTENSIONS OFF)
 
-set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_EXTENSIONS OFF)
 
-set(SOURCE_PATH "traffic-light-stm32-cube-ide")
+set(CMAKE_C_STANDARD 17)
+set(CMAKE_C_STANDARD_REQUIRED ON)               # Define explicitly to use of the standard C11 declared in the previous line
+set(CMAKE_C_EXTENSIONS OFF)                     # Disabling vendor-specific extensions
+
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)             # Define explicitly to use of the standard C++17 declared in the previous line
+set(CMAKE_CXX_EXTENSIONS OFF)                   # Disabling vendor-specific extensions
+
+set(SOURCE_PATH "traffic-light-stm32-cube-ide") # Code produced by STM32CubeIDE
 
 set(STM32CUBEMX_GENERATED_FILES
 
@@ -72,8 +81,8 @@ set(EXECUTABLE ${PROJECT_NAME}.out)
 add_executable(${EXECUTABLE} ${STM32CUBEMX_GENERATED_FILES})
 
 target_compile_definitions(${EXECUTABLE} PRIVATE
-        -DUSE_HAL_DRIVER
-        -DSTM32F446xx
+        -D USE_HAL_DRIVER
+        -D STM32F446xx
         )
 
 target_include_directories(${EXECUTABLE} PRIVATE
@@ -83,7 +92,7 @@ target_include_directories(${EXECUTABLE} PRIVATE
         ${SOURCE_PATH}/Drivers/STM32F4xx_HAL_Driver/Inc
         )
 
-target_compile_options(${EXECUTABLE} PRIVATE
+target_compile_options(${EXECUTABLE} PRIVATE -H # This -H option show each path that are used to include a requested header
         -mcpu=cortex-m4
         -mthumb
         -mfpu=fpv4-sp-d16
@@ -99,8 +108,9 @@ target_compile_options(${EXECUTABLE} PRIVATE
         -pedantic                               # Issue all warnings demanded by strict ISO and ISO C++
 
         # C++ options
-        -fno-exceptions                         # Disable handling exceptions
-        $<$<COMPILE_LANGUAGE:CXX>:-fno-rtti>    # Disable generation of information about every class with virtual functions
+        # Generator expressions  # $<EXPRESSION:arg1,arg2,arg3>
+        $<$<COMPILE_LANGUAGE:CXX>:-fno-exceptions>      # Disable handling exceptions
+        $<$<COMPILE_LANGUAGE:CXX>:-fno-rtti>            # Disable generation of information about every class with virtual functions
         $<$<COMPILE_LANGUAGE:CXX>:-fno-use-cxa-atexit>  # Do not use __cxa_atexit for registering static destructors
 
         $<$<CONFIG:Debug>:-O0 -g3>
