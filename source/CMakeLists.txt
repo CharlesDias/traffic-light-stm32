@@ -1,29 +1,4 @@
-cmake_minimum_required(VERSION 3.20)
-
-# Keep this options before project() command
-# Commands to generate warnings in case of in-source builds.
-set(CMAKE_DISABLE_SOURCE_CHANGES ON)
-set(CMAKE_DISABLE_IN_SOURCE_BUILD ON)
-
-# Don't move of position this command
-project(traffic-light-stm32f4 VERSION 0.1.0)
-
-# add_subdirectory(traffic-light-stm32-cube-ide)
-# add_subdirectory(traffic-light-code)
-
-# Keep this options after project() command
-enable_language(C ASM)
-
-
-set(CMAKE_C_STANDARD 17)
-set(CMAKE_C_STANDARD_REQUIRED ON)               # Define explicitly to use of the standard C11 declared in the previous line
-set(CMAKE_C_EXTENSIONS OFF)                     # Disabling vendor-specific extensions
-
-set(CMAKE_CXX_STANDARD 20)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)             # Define explicitly to use of the standard C++17 declared in the previous line
-set(CMAKE_CXX_EXTENSIONS OFF)                   # Disabling vendor-specific extensions
-
-set(SOURCE_PATH "traffic-light-stm32-cube-ide") # Code produced by STM32CubeIDE
+set(SOURCE_PATH "${CMAKE_SOURCE_DIR}/source/traffic-light-stm32-cube-ide") # Code produced by STM32CubeIDE
 
 set(STM32CUBEMX_GENERATED_FILES
 
@@ -117,7 +92,7 @@ target_compile_options(${EXECUTABLE} PRIVATE -H # This -H option show each path 
         )
 
 target_link_options(${EXECUTABLE} PRIVATE
-        -T${CMAKE_SOURCE_DIR}/${SOURCE_PATH}/STM32F446ZETX_FLASH.ld
+        -T${SOURCE_PATH}/STM32F446ZETX_FLASH.ld
         -mcpu=cortex-m4
         -mthumb
         -mfpu=fpv4-sp-d16

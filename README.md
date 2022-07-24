@@ -35,13 +35,13 @@ docker run --rm -it -v $(pwd):/home/project -w /home/project charlesdias/gcc-arm
 
 7. Execute the build CMake commands. This command will create the build folder in the root project path and build the project.
 ```console
-cmake -DCMAKE_TOOLCHAIN_FILE=../source/arm-none-eabi-gcc.cmake -DCMAKE_BUILD_TYPE=Debug -S ./source -B ./build
+cmake -DCMAKE_TOOLCHAIN_FILE=../cmake/arm-none-eabi-gcc.cmake -DCMAKE_BUILD_TYPE=Debug -S . -B ./build
 cmake --build ./build -- -j 4
 ```
 Or,
 
 ```console
-cmake -G "Unix Makefiles" -DCMAKE_TOOLCHAIN_FILE=../source/arm-none-eabi-gcc.cmake -DCMAKE_BUILD_TYPE=Debug -S ./source -B ./build
+cmake -G "Unix Makefiles" -DCMAKE_TOOLCHAIN_FILE=../cmake/arm-none-eabi-gcc.cmake -DCMAKE_BUILD_TYPE=Debug -S . -B ./build
 cmake --build ./build -- -j 4
 ```
 
